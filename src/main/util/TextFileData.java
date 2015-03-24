@@ -9,41 +9,50 @@ import java.util.stream.Stream;
 
 public class TextFileData {
 	private static boolean isFirst = true;
-	private static String [][] dataArray;
-	public void getTxtFileData() {
+	private static String[][] dataArray;
+	private static int indexCounter;
+	
+	public String[][] getTxtFileData() {
 		URL url = TextFileData.class.getClassLoader().getResource(
 				"Resources/map.txt");
-		
 		try (Stream<String> stream = Files.lines(Paths.get(url.getPath()),
 				Charset.defaultCharset())) {
-			
+
 			stream.forEach((data) -> {
 				if (isFirst) {
 					String[] size = data.split(" ");
-					if(size.length==2){
-						dataArray = new String[Integer.parseInt(size[0])][Integer.parseInt(size[1])];
+					if (size.length == 2) {
+						dataArray = new String[Integer.parseInt(size[0])][Integer
+								.parseInt(size[1])];
 						isFirst = false;
-						System.out.println("is first here "+dataArray.length);
+						System.out.println("is first here " + dataArray.length);
 					} else {
-						//TODO: print error
-						System.out.println("size length = "+size.length);
+						// TODO: Print out into a log viewer
+						System.out.println("size length = " + size.length);
 					}
 				} else {
-					System.out.println("lalala");
-					System.out.println("is next here "+dataArray.length);
-				}
-				System.out.println("data: " + data);
-				try {
-					Thread.sleep(5000);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					if(indexCounter < dataArray.length){
+						String[] information = data.split(" ");
+						//to ensure no overbound for both arrays
+						if(information.length==dataArray[indexCounter].length){
+							for (int i=0;i<information.length;i++){
+								//Copy the data in the line onto dataArray
+								dataArray[indexCounter][i]=information[i];
+							}
+							System.out.println("lalala");
+							System.out.println("is next here " + dataArray.length);
+							indexCounter++;
+						}
+					} else {
+						System.out.println("IndexCounter > dataArray.length");
+					}
 				}
 			});
 		} catch (IOException ex) {
 			// TODO: Print out into a log viewer
 			ex.printStackTrace();
 		}
+		return dataArray;
 	}
 
 }
