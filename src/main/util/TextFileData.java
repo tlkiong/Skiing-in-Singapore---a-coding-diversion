@@ -39,8 +39,8 @@ public class TextFileData {
 								//Copy the data in the line onto dataArray
 								dataArray[indexCounter][i]=information[i];
 							}
-							System.out.println("lalala");
-							System.out.println("is next here " + dataArray.length);
+//							System.out.println("lalala");
+//							System.out.println("is next here " + dataArray.length);
 							indexCounter++;
 						}
 					} else {

@@ -2,27 +2,31 @@ package main;
 
 import java.io.IOException;
 
-import main.common.util.Resource;
-import main.dashboard.view.DashboardViewController;
-import main.root.view.RootLayoutController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import main.homepage.view.HomepageController;
+import main.root.view.RootLayoutController;
 
 public class MainApp extends Application {
 	
 	private BorderPane rootLayout;
 	private Stage primaryStage;
-
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+	
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Skiing In Singapore!");
 
 		initRootLayout();
+		showHomepageView();
 	}
 	
 	/**
@@ -48,6 +52,7 @@ public class MainApp extends Application {
 			// Show the scene containing the root layout
 			Scene scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
+			primaryStage.centerOnScreen();
 			
 			// Give root layout controller access to the main app.
 			RootLayoutController controller = loader.getController();
@@ -59,29 +64,30 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
+	
+
+	private void showHomepageView() {
+		try {
+			// Load person overview
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class
+					.getResource("homepage/view/HomepageView.fxml"));
+			AnchorPane dashboardView = (AnchorPane) loader.load();
+
+			// Set homepage view onto center of root layout
+			rootLayout.setCenter(dashboardView);
+			
+			// Give the controller access to the main app.
+			HomepageController homepageController = loader.getController();
+			homepageController.setMainApp(this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 //
 //	public void showDashboard(){
-//		try {
-//			// Load person overview
-//			FXMLLoader loader = new FXMLLoader();
-//			loader.setLocation(MainApp.class
-//					.getResource("dashboard/view/DashboardView.fxml"));
-//			AnchorPane dashboardView = (AnchorPane) loader.load();
-//			primaryStage.setHeight(780);
-//			primaryStage.setWidth(1200);
-//			primaryStage.setY(0);
-//			primaryStage.setX(200);
-//			primaryStage.setMaximized(true);
-//			// Set person overview onto center of root layout
-//			rootLayout.setCenter(dashboardView);
-//			
-//			// Give the controller access to the main app.
-//			DashboardViewController dashboardViewController = loader.getController();
-//			dashboardViewController.setMainApp(this);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+//		
 //	}
 //	
 }
